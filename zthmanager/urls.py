@@ -17,10 +17,14 @@ from django.contrib import admin
 from django.urls import path
 from ztu import views
 from django.conf.urls import url
+from django.views.generic.base import TemplateView
+
 urlpatterns = [
     url(r'^api/login', views.login, name='login'),
     url(r'^api/add_user', views.add_user, name='add_user'),
     url(r'^api/delete_user', views.delete_user, name='delete_user'),
     url(r'^api/update_user', views.update_user, name='update_user'),
     url(r'^api/get_all_user', views.get_all_manager, name='get_all_manager'),
+    url(r'^$',TemplateView.as_view(template_name='index.html')),
+
 ]
