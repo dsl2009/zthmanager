@@ -12,9 +12,9 @@ def login(user_name, password):
     if len(reult)>0:
         d = reult[0]
         data = {'company_id':d[0], 'company_name':d[1]}
-        return json.dumps({'status':200, 'data':data})
+        return {'status':200, 'data':data}
     else:
-        return json.dumps({'status':400, 'data':'user or password is wrong!'})
+        return {'status':400, 'data':'user or password is wrong!'}
 
 
 def update_manager(tel_num, user_name, pre, manager_id):
