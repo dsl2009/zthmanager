@@ -65,7 +65,7 @@ def get_manager_by_company(company_id):
             'user_auth':bool(x[3]),
             'add_time':x[-1]
         })
-    return dts
+    return {'data':dts,'status':200}
 
 
 
