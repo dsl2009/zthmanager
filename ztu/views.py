@@ -51,9 +51,9 @@ def get_all_manager(request):
     else:
         return HttpResponse(json.dumps({'status': 400, 'message': 'fail'}))
 def delete_user(request):
-    user_id = request.GET.get("user_id", None)
-    if user_id:
-        dt = data_manager.delete_mananger(user_id)
+    user_tel = request.GET.get("user_tel", None)
+    if user_tel:
+        dt = data_manager.delete_mananger(user_tel)
         return HttpResponse(json.dumps(dt, cls=CJsonEncoder))
     else:
         return HttpResponse(json.dumps({'status': 400, 'message': 'fail'}))
