@@ -52,7 +52,7 @@ def delete_mananger(manager_id):
 def get_manager_by_company(company_id):
     db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
     cursor = db.cursor()
-    sql = 'SELECT * from manager_tb where company_id=%s'
+    sql = 'SELECT * from manager_tb where company=%s'
     cursor.execute(sql,(company_id,))
     results = cursor.fetchall()
     db.close()
