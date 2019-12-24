@@ -18,7 +18,11 @@ def add_user(request):
     user_auth = request.GET.get("user_auth", None)
     user_tel = request.GET.get("user_tel", None)
     if username and user_auth and user_tel:
-        dt = data_manager.add_manager(tel_num=user_tel,user_name=username, pre=int(user_auth))
+        if user_auth == 'true':
+            user_auth = 1
+        else:
+            user_auth = 0
+        dt = data_manager.add_manager(tel_num=user_tel,user_name=username, pre=user_auth)
         return HttpResponse(json.dumps(dt,cls=CJsonEncoder))
     else:
         return HttpResponse(json.dumps({'status': 400, 'message': 'fail'}))
@@ -29,7 +33,12 @@ def update_user(request):
     user_tel = request.GET.get("user_tel", None)
     user_id = request.GET.get("user_id", None)
     if username and user_auth and user_tel:
-        dt = data_manager.update_manager(tel_num=user_tel,user_name=username, pre=int(user_auth),manager_id=user_id)
+        if user_auth=='true':
+            user_auth=1
+        else:
+            user_auth=0
+
+        dt = data_manager.update_manager(tel_num=user_tel,user_name=username, pre=user_auth,manager_id=user_id)
         return HttpResponse(json.dumps(dt,cls=CJsonEncoder))
     else:
         return HttpResponse(json.dumps({'status': 400, 'message': 'fail'}))
