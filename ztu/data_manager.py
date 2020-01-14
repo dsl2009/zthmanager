@@ -111,9 +111,6 @@ def get_devices_history(dev_mac):
     return dts
 
 
-def formate_time(tx):
-    t = time.strptime(tx, "%Y-%m-%d %H:%M:%S")
-    return int(time.mktime(t))
 
 
 def get_history(dev_mac):
