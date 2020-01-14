@@ -125,5 +125,5 @@ def get_history(dev_mac):
     db.close()
     dts = {'data':[]}
     for x in results:
-        dts['data'].append([int(x[1].timestamp()),x[0]])
+        dts['data'].append([x[1].timestamp(),x[0]])
     return dts
