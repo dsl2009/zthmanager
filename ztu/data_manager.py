@@ -73,7 +73,7 @@ def get_device_by_company_web(company_id):
     for k in dts:
         keys = list(k.keys())[0]
         dk = keys.split('_')
-        rts.append({'id':int(dk[0]),'dev_mac':dk[1],'dev_name':dk[2],'online':dk[3],'devices':k[keys]})
+        rts.append({'id':int(dk[0]),'dev_mac':dk[1],'dev_name':dk[2],'online':dk[3],'children':k[keys]})
     return rts
 
 
