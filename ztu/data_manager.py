@@ -112,7 +112,6 @@ def get_devices_history(dev_mac):
 
 
 def formate_time(tx):
-    print(tx.timestamp())
     t = time.strptime(tx, "%Y-%m-%d %H:%M:%S")
     return int(time.mktime(t))
 
@@ -126,5 +125,5 @@ def get_history(dev_mac):
     db.close()
     dts = {'data':[]}
     for x in results:
-        dts['data'].append([formate_time(x[1]),x[0]])
+        dts['data'].append([int(x[1].timestamp()),x[0]])
     return dts
