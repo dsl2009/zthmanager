@@ -2,6 +2,7 @@
 import pymysql
 import json
 import requests
+import time
 
 def login(user_name, password):
     db = pymysql.connect(host='localhost', user='root' , passwd='900504', db='nst_iot', port=3306, charset='utf8')
@@ -110,3 +111,19 @@ def get_devices_history(dev_mac):
     return dts
 
 
+def formate_time(tx):
+    t = time.strptime(tx, "%Y-%m-%d %H:%M:%S")
+    return int(time.mktime(t))
+
+
+def get_history(dev_mac):
+    db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
+    cursor = db.cursor()
+    sql = 'SELECT status, time_sep from dev_history where dev_mac=%s limit 100'
+    cursor.execute(sql,(dev_mac,))
+    results = cursor.fetchall()
+    db.close()
+    dts = {'data':[]}
+    for x in results:
+        dts['data'].append([formate_time(x[1]),x[0]])
+    return dts
