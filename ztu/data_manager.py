@@ -66,14 +66,14 @@ def get_device_by_company_web(company_id):
             if dts[i].get(key,None) is not None:
                 rel = i
         if rel==-1:
-            dts.append({key:[{'dev_mac':x[5],'dev_name':x[6],'dev_color':x[7],'row-key':x[8]}]})
+            dts.append({key:[{'dev_mac':x[5],'dev_name':x[6],'dev_color':x[7],'id':x[8]}]})
         else:
-            dts[rel][key].append({'dev_mac':x[5],'dev_name':x[6],'dev_color':x[7],' row-key':x[8]})
+            dts[rel][key].append({'dev_mac':x[5],'dev_name':x[6],'dev_color':x[7],' id':x[8]})
     rts = []
     for k in dts:
         keys = list(k.keys())[0]
         dk = keys.split('_')
-        rts.append({'row-key':int(dk[0]),'dev_mac':dk[1],'dev_name':dk[2],'online':dk[3],'devices':k[keys]})
+        rts.append({'id':int(dk[0]),'dev_mac':dk[1],'dev_name':dk[2],'online':dk[3],'devices':k[keys]})
     return rts
 
 
