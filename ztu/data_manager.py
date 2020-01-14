@@ -112,7 +112,7 @@ def get_devices_history(dev_mac):
 
 
 def formate_time(tx):
-    print(tx.time())
+    print(tx.timestamp())
     t = time.strptime(tx, "%Y-%m-%d %H:%M:%S")
     return int(time.mktime(t))
 
