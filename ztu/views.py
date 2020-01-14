@@ -67,3 +67,11 @@ def get_devices_web_company(request):
         data = dict()
         data['status'] = 404
         return HttpResponse(json.dumps(data))
+
+def get_device_history(request):
+    dev_mac = request.GET.get("dev_mac", None)
+    if dev_mac:
+        dt = data_manager.get_devices_history(dev_mac)
+        return HttpResponse(json.dumps(dt, cls=CJsonEncoder))
+    else:
+        return HttpResponse(json.dumps({'status': 400, 'message': 'fail'}))

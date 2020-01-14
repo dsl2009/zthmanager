@@ -96,6 +96,17 @@ def get_manager_by_company(company_id):
     return {'data':dts,'status':200}
 
 
-
+def get_devices_history(dev_mac):
+    db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
+    cursor = db.cursor()
+    sql = 'SELECT status, time_sep from dev_history where dev_mac=%s limit 100'
+    cursor.execute(sql,(dev_mac,))
+    results = cursor.fetchall()
+    db.close()
+    dts = {'time_sep':[],'status':[]}
+    for x in results:
+        dts['status'].append(x[0])
+        dts['time_sep'].append(x[1])
+    return dts
 
 
