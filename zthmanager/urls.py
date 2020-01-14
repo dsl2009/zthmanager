@@ -21,6 +21,7 @@ from django.views.generic.base import TemplateView
 
 urlpatterns = [
     url(r'^api/login', views.login, name='login'),
+    url(r'^api/get_devices', views.get_devices_web_company, name='get_devices_web_company'),
     url(r'^api/add_user', views.add_user, name='add_user'),
     url(r'^api/delete_user', views.delete_user, name='delete_user'),
     url(r'^api/update_user', views.update_user, name='update_user'),

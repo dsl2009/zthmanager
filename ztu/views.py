@@ -57,3 +57,13 @@ def delete_user(request):
         return HttpResponse(json.dumps(dt, cls=CJsonEncoder))
     else:
         return HttpResponse(json.dumps({'status': 400, 'message': 'fail'}))
+
+def get_devices_web_company(request):
+    code = request.GET.get("company_id", None)
+    if code:
+        data = data_manager.get_device_by_company_web(code)
+        return HttpResponse(json.dumps(data))
+    else:
+        data = dict()
+        data['status'] = 404
+        return HttpResponse(json.dumps(data))

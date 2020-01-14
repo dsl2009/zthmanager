@@ -48,6 +48,34 @@ def delete_mananger(manager_id):
     return  {'status':200,'message':'ok'}
 
 
+def get_device_by_company_web(company_id):
+    db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
+    cursor = db.cursor()
+    sql = 'SELECT a.id as company_id,b.id, b.router_mac,b.router_name,b.on_line,c.dev_mac,c.dev_name,c.color,c.id ' \
+          'FROM manager_tb a, router_tb b, device_tb c ' \
+          'WHERE a.company=%s AND a.id=b.admin_id AND b.router_mac=c.router_mac'
+    cursor.execute(sql,(company_id,))
+    results = cursor.fetchall()
+    db.close()
+    dts = []
+
+    for x in results:
+        key = str(x[1])+'_'+str(x[2])+'_'+str(x[3])+'_'+str(x[4])
+        rel = -1
+        for i in range(len(dts)):
+            if dts[i].get(key,None) is not None:
+                rel = i
+        if rel==-1:
+            dts.append({key:[{'dev_mac':x[5],'dev_name':x[6],'dev_color':x[7],'id':x[8]}]})
+        else:
+            dts[rel][key].append({'dev_mac':x[5],'dev_name':x[6],'dev_color':x[7],' id':x[8]})
+    rts = []
+    for k in dts:
+        keys = list(k.keys())[0]
+        dk = keys.split('_')
+        rts.append({'id':int(dk[0]),'dev_mac':dk[1],'dev_name':dk[2],'online':dk[3],'devices':k[keys]})
+    return rts
+
 
 def get_manager_by_company(company_id):
     db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
