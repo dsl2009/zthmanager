@@ -3,6 +3,7 @@ import pymysql
 import json
 import requests
 import time
+import datetime
 
 def login(user_name, password):
     db = pymysql.connect(host='localhost', user='root' , passwd='900504', db='nst_iot', port=3306, charset='utf8')
@@ -129,6 +130,8 @@ def get_history(dev_mac):
         data.append([int(x[1].timestamp()*1000),x[0]+10])
         print(x[1], x[1].timestamp())
         data_nn.append([int(x[1].timestamp()), x[0]])
+    print(datetime.datetime.now(),datetime.datetime.now().timestamp())
+    print(time.time())
     data_nn.append([time.time(), data[-1][1]])
 
     for i in range(len(data) - 1):
