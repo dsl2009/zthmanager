@@ -122,7 +122,6 @@ def get_history(dev_mac):
     db.close()
     data = []
     dts = {'data':[]}
-    print(results)
     for x in results:
         data.append([int(x[1].timestamp()*1000),x[0]+10])
     if len(data)>2:
@@ -142,12 +141,16 @@ def get_history_times(dev_mac):
     db.close()
     data = []
     dts = {'data':[0,0,0],'labels':['关闭时间','运行时间','故障时间']}
-    if len(results)==0:
+    if len(results) == 0:
         return dts
-
-    for i in range(1,len(results)+1):
-        if results[i][0] in [32, 64, 96]:
-            dts['data'][1]+=results[i+1][1]-results[i][0]
-
-
+    for x in results:
+        data.append([int(x[1].timestamp()), x[0]])
+    data.append([time.time(),data[-1][1]])
+    for i in range(1,len(data)):
+        if data[i-1][1] in [32, 64, 96]:
+            dts['data'][1]+=data[i][0]-data[i-1][0]
+        elif data[i-1][1]==0:
+            dts['data'][0] += data[i][0] - data[i - 1][0]
+        else:
+            dts['data'][2] += data[i][0] - data[i - 1][0]
     return dts

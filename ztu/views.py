@@ -83,3 +83,11 @@ def get_history(request):
         return HttpResponse(json.dumps(dt, cls=CJsonEncoder))
     else:
         return HttpResponse(json.dumps({'status': 400, 'message': 'fail'}))
+
+def get_static_time(request):
+    dev_mac = request.GET.get("dev_mac", None)
+    if dev_mac:
+        dt = data_manager.get_history_times(dev_mac)
+        return HttpResponse(json.dumps(dt, cls=CJsonEncoder))
+    else:
+        return HttpResponse(json.dumps({'status': 400, 'message': 'fail'}))
