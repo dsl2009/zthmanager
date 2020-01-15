@@ -138,7 +138,7 @@ def get_history(dev_mac):
     for i in range(1, len(data_nn)):
         if data_nn[i - 1][1] in [32, 64, 96]:
             dts['times'][1] += data_nn[i][0] - data_nn[i - 1][0]
-        elif data[i - 1][1] == 0:
+        elif data_nn[i - 1][1] == 0:
             dts['times'][0] += data_nn[i][0] - data_nn[i - 1][0]
         else:
             dts['times'][2] += data_nn[i][0] - data_nn[i - 1][0]
