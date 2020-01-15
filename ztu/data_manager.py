@@ -122,6 +122,7 @@ def get_history(dev_mac):
     db.close()
     data = []
     dts = {'data':[]}
+    print(results)
     for x in results:
         data.append([int(x[1].timestamp()*1000),x[0]+10])
     if len(data)>2:
@@ -130,4 +131,23 @@ def get_history(dev_mac):
             dts['data'].append([data[k+1][0]-1000,data[k][1]])
     else:
         dts['data'] = data
+    return dts
+
+def get_history_times(dev_mac):
+    db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
+    cursor = db.cursor()
+    sql = 'SELECT status, time_sep from dev_history where dev_mac=%s limit 100'
+    cursor.execute(sql,(dev_mac,))
+    results = cursor.fetchall()
+    db.close()
+    data = []
+    dts = {'data':[0,0,0],'labels':['关闭时间','运行时间','故障时间']}
+    if len(results)==0:
+        return dts
+
+    for i in range(1,len(results)+1):
+        if results[i][0] in [32, 64, 96]:
+            dts['data'][1]+=results[i+1][1]-results[i][0]
+
+
     return dts
