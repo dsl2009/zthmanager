@@ -121,15 +121,28 @@ def get_history(dev_mac):
     results = cursor.fetchall()
     db.close()
     data = []
-    dts = {'data':[]}
+    data_nn = []
+    dts = {'data':[],'labels':['关闭时间','运行时间','故障时间'],'times':[0,0,0]}
+    if len(results)==0:
+        return dts
     for x in results:
         data.append([int(x[1].timestamp()*1000),x[0]+10])
-    if len(data)>2:
-        for k in range(len(data)-2):
-            dts['data'].append(data[k])
-            dts['data'].append([data[k+1][0]-1000,data[k][1]])
-    else:
-        dts['data'] = data
+        data_nn.append([int(x[1].timestamp()), x[0]])
+    data_nn.append([time.time(), data[-1][1]])
+
+    for i in range(len(data) - 1):
+        dts['data'].append(data[i])
+        dts['data'].append([data[i + 1][0] - 1000, data[i][1]])
+    dts['data'].append([time.time()*1000, data[-1][1]])
+    for i in range(1, len(data_nn)):
+        if data_nn[i - 1][1] in [32, 64, 96]:
+            dts['times'][1] += data_nn[i][0] - data_nn[i - 1][0]
+        elif data[i - 1][1] == 0:
+            dts['times'][0] += data_nn[i][0] - data_nn[i - 1][0]
+        else:
+            dts['times'][2] += data_nn[i][0] - data_nn[i - 1][0]
+    for x in range(3):
+        dts['times'][i] = dts['times'][i] / 3600.0
     return dts
 
 def get_history_times(dev_mac):
@@ -153,4 +166,8 @@ def get_history_times(dev_mac):
             dts['data'][0] += data[i][0] - data[i - 1][0]
         else:
             dts['data'][2] += data[i][0] - data[i - 1][0]
+    for x in range(3):
+        dts['data'][i] = dts['data'][i]/3600.0
+
+
     return dts
