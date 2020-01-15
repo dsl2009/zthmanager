@@ -134,6 +134,7 @@ def get_history(dev_mac):
         dts['data'].append(data[i])
         dts['data'].append([data[i + 1][0] - 1000, data[i][1]])
     dts['data'].append([time.time()*1000, data[-1][1]])
+    print(dts)
     for i in range(1, len(data_nn)):
         if data_nn[i - 1][1] in [32, 64, 96]:
             dts['times'][1] += data_nn[i][0] - data_nn[i - 1][0]
@@ -141,7 +142,7 @@ def get_history(dev_mac):
             dts['times'][0] += data_nn[i][0] - data_nn[i - 1][0]
         else:
             dts['times'][2] += data_nn[i][0] - data_nn[i - 1][0]
-    print(dts)
+
     for x in range(3):
         dts['times'][i] = dts['times'][i] / 3600.0
     return dts
