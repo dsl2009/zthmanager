@@ -123,11 +123,11 @@ def get_history(dev_mac):
     data = []
     dts = {'data':[]}
     for x in results:
-        data.append([x[1].timestamp(),x[0]+10])
+        data.append([int(x[1].timestamp()*1000),x[0]+10])
     if len(data)>2:
-        for k in range(len(data)-1):
+        for k in range(len(data)-2):
             dts['data'].append(data[k])
-            dts['data'].append([data[k+1][0]-1,data[k][1]])
+            dts['data'].append([data[k+1][0]-1000,data[k][1]])
     else:
         dts['data'] = data
     return dts
