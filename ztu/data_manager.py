@@ -129,12 +129,14 @@ def get_history(dev_mac):
         data.append([int(x[1].timestamp()*1000),x[0]+10])
         data_nn.append([int(x[1].timestamp()), x[0]])
     data_nn.append([time.time(), data[-1][1]])
-
+    '''
     for i in range(len(data) - 1):
         dts['data'].append(data[i])
         dts['data'].append([data[i + 1][0] - 1000, data[i][1]])
     dts['data'].append(data[-1])
     dts['data'].append([time.time()*1000, data[-1][1]])
+    '''
+    dts['data'] = data
     for i in range(1, len(data_nn)):
         if data_nn[i - 1][1] in [32, 64, 96]:
             dts['times'][1] += data_nn[i][0] - data_nn[i - 1][0]
