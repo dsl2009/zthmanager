@@ -106,7 +106,7 @@ def get_devices_history(dev_mac):
     db.close()
     dts = {'time_sep':[],'status':[]}
     for x in results:
-        dts['status'].append(x[0])
+        dts['status'].append(x[0]+10)
         dts['time_sep'].append(x[1])
     return dts
 
