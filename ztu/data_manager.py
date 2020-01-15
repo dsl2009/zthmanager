@@ -127,6 +127,7 @@ def get_history(dev_mac):
         return dts
     for x in results:
         data.append([int(x[1].timestamp()*1000),x[0]+10])
+        print(x[1], x[1].timestamp())
         data_nn.append([int(x[1].timestamp()), x[0]])
     data_nn.append([time.time(), data[-1][1]])
 
