@@ -40,14 +40,25 @@ def add_manager(tel_num, user_name, pre):
     else:
         return {'status':200,'message':'ok'}
 
-def delete_mananger(manager_id):
+def update_router(change_id, delete_id):
     db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
     cursor = db.cursor()
-    sql = 'delete  from manager_tb where user_tel=%s'
-    cursor.execute(sql,(manager_id,))
+    sql = 'update router_tb set admin_id=%s where id=%s'
+    cursor.execute(sql,(change_id, delete_id,))
+    db.commit()
+    db.close()
+
+
+def delete_mananger(change_id, delete_id):
+    update_router(change_id, delete_id)
+    db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
+    cursor = db.cursor()
+    sql = 'delete  from manager_tb where id=%s'
+    cursor.execute(sql,(delete_id,))
     db.commit()
     db.close()
     return  {'status':200,'message':'ok'}
+
 
 
 def get_device_by_company_web(company_id):
