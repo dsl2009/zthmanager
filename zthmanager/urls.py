@@ -21,6 +21,9 @@ from django.views.generic.base import TemplateView
 
 urlpatterns = [
     url(r'^api/login', views.login, name='login'),
+    url(r'^api/get_kehu', views.get_kehu, name='get_kehu'),
+    url(r'^api/add_kehu', views.add_kehu, name='add_kehu'),
+    url(r'^api/update_kehu', views.update_kehu, name='update_kehu'),
     url(r'^api/get_devices', views.get_devices_web_company, name='get_devices_web_company'),
     url(r'^api/get_static_time', views.get_static_time, name='get_static_time'),
     url(r'^api/get_device_history', views.get_device_history, name='get_device_history'),

@@ -108,6 +108,47 @@ def get_manager_by_company(company_id):
         })
     return {'data':dts,'status':200}
 
+def get_kehu():
+    db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
+    cursor = db.cursor()
+    sql = 'SELECT * from kehu_tb'
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    db.close()
+    dts = []
+    for x in results:
+        dts.append({
+            'id':x[0],
+            'user_name':x[1],
+            'user_tel':x[2],
+            'user_login_name':x[3],
+            'user_login_password': x[4],
+            'add_time':x[5]
+        })
+    return {'data':dts,'status':200}
+
+
+def add_kehu(user_name,  user_tel, user_login_name, user_login_password):
+    db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
+    cursor = db.cursor()
+    sql =  'insert into kehu_tb(name, tel, user_name, password) values ( %s,%s,%s,%s)'
+    num = cursor.execute(sql, ( user_name,  user_tel, user_login_name, user_login_password))
+    db.commit()
+    db.close()
+    if num == 0:
+        return {'status':400,'message':'ok'}
+    else:
+        return {'status':200,'message':'ok'}
+
+def update_kehu(user_name,  user_tel, user_login_name, user_login_password, kehu_id):
+    db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
+    cursor = db.cursor()
+    sql = 'update manager_tb set name=%s,tel=%s,user_login_name=%s , user_login_password=%s, where id=%s'
+    num = cursor.execute(sql, ( user_name,  user_tel, user_login_name, user_login_password, kehu_id))
+    db.commit()
+    db.close()
+    return {'status':200,'message':'ok'}
+
 
 def get_devices_history(dev_mac):
     db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')

@@ -92,3 +92,29 @@ def get_static_time(request):
         return HttpResponse(json.dumps(dt, cls=CJsonEncoder))
     else:
         return HttpResponse(json.dumps({'status': 400, 'message': 'fail'}))
+
+
+def get_kehu(request):
+    dt = data_manager.get_kehu()
+    return HttpResponse(json.dumps(dt, cls=CJsonEncoder))
+def add_kehu(request):
+    user_name = request.GET.get("user_name", None)
+    user_tel = request.GET.get("user_tel", None)
+    user_login_name = request.GET.get("user_login_name", None)
+    user_login_password = request.GET.get("user_login_password", None)
+    if user_name and user_tel and user_login_name and user_login_password:
+        dt = data_manager.add_kehu(user_name,  user_tel, user_login_name, user_login_password)
+        return HttpResponse(json.dumps(dt, cls=CJsonEncoder))
+    else:
+        return HttpResponse(json.dumps({'status': 400, 'message': 'fail'}))
+def update_kehu(request):
+    user_name = request.GET.get("user_name", None)
+    user_tel = request.GET.get("user_tel", None)
+    user_login_name = request.GET.get("user_login_name", None)
+    user_login_password = request.GET.get("user_login_password", None)
+    user_id = request.GET.get("user_id", None)
+    if user_name and user_tel and user_login_name and user_login_password:
+        dt = data_manager.update_kehu(user_name,  user_tel, user_login_name, user_login_password,user_id)
+        return HttpResponse(json.dumps(dt, cls=CJsonEncoder))
+    else:
+        return HttpResponse(json.dumps({'status': 400, 'message': 'fail'}))
