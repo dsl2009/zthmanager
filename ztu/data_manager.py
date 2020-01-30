@@ -91,6 +91,7 @@ def get_device_by_company_web(company_id):
 
 
 def get_manager_by_company(company_id):
+    name_dict = ['仅可以管理自己添加的设备','可以管理所有的设备','仅可以查看所有的设备']
     db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
     cursor = db.cursor()
     sql = 'SELECT * from manager_tb where company=%s'
@@ -103,7 +104,7 @@ def get_manager_by_company(company_id):
             'id':x[0],
             'user_name':x[1],
             'user_tel':x[2],
-            'user_auth':bool(x[3]),
+            'user_auth':name_dict[x[3]],
             'add_time':x[-1]
         })
     return {'data':dts,'status':200}
