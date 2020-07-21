@@ -19,6 +19,7 @@ def super_login(request):
     else:
         return HttpResponse(json.dumps({'status': 400, 'message': 'fail'}))
 
+
 def add_super_user(request):
     username = request.GET.get("user_name", None)
     user_auth = request.GET.get("user_auth", None)
