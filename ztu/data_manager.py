@@ -18,6 +18,14 @@ def login(user_name, password):
     else:
         return {'status':400, 'data':'user or password is wrong!'}
 
+def login_super(user_name, password):
+    if user_name==password:
+        data = {'user_id':2}
+        return {'status':200, 'data':data}
+    else:
+        return {'status':400, 'data':'user or password is wrong!'}
+
+
 
 def update_manager(tel_num, user_name, pre, manager_id):
     db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
@@ -40,7 +48,7 @@ def add_manager(tel_num, user_name, pre):
     else:
         return {'status':200,'message':'ok'}
 
-def add_super_manager(tel_num, user_name,auth):
+def add_super_manager(tel_num, user_name, auth):
     db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
     cursor = db.cursor()
     sql =  'insert into super_manager(user_name, user_tel, user_auth) values ( %s,%s,%s)'
@@ -52,6 +60,28 @@ def add_super_manager(tel_num, user_name,auth):
     else:
         return {'status':200,'message':'ok'}
 
+
+
+def get_all_super_manager():
+    name_dict = ['仅可以查看所有的设备','可以管理所有的设备']
+    db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
+    cursor = db.cursor()
+    sql = 'SELECT * from super_manager'
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    db.close()
+    dts = []
+    for x in results:
+        dts.append({
+            'id':x[0],
+            'user_name':x[1],
+            'user_tel':x[2],
+            'user_auth':name_dict[x[3]],
+            'add_time':x[-1]
+        })
+    return {'data':dts,'status':200}
+
+
 def update_kehu_super_manager(change_id, delete_id):
     db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
     cursor = db.cursor()
@@ -62,7 +92,8 @@ def update_kehu_super_manager(change_id, delete_id):
 
 
 def delete_super_mananger(change_id, delete_id):
-    update_kehu_super_manager(change_id, delete_id)
+    if change_id:
+        update_kehu_super_manager(change_id, delete_id)
     db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
     cursor = db.cursor()
     sql = 'delete  from super_manager where id=%s'

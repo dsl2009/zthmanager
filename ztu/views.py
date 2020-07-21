@@ -11,6 +11,52 @@ def login(request):
         return HttpResponse(json.dumps(data_manager.login(username,password),cls=CJsonEncoder))
     else:
         return HttpResponse(json.dumps({'status': 400, 'message': 'fail'}))
+def super_login(request):
+    username = request.GET.get("user_name", None)
+    password = request.GET.get("password", None)
+    if username and password:
+        return HttpResponse(json.dumps(data_manager.login_super(username,password),cls=CJsonEncoder))
+    else:
+        return HttpResponse(json.dumps({'status': 400, 'message': 'fail'}))
+
+def add_super_user(request):
+    username = request.GET.get("user_name", None)
+    user_auth = request.GET.get("user_auth", None)
+    user_tel = request.GET.get("user_tel", None)
+    if username and user_auth and user_tel:
+        dt = data_manager.add_super_manager(tel_num=user_tel,user_name=username, auth=user_auth)
+        return HttpResponse(json.dumps(dt,cls=CJsonEncoder))
+    else:
+        return HttpResponse(json.dumps({'status': 400, 'message': 'fail'}))
+
+def delete_super_user(request):
+    change_id = request.GET.get("change_id", None)
+    delete_id = request.GET.get("delete_id", None)
+    if delete_id :
+        dt = data_manager.delete_super_mananger(change_id, delete_id)
+        return HttpResponse(json.dumps(dt,cls=CJsonEncoder))
+    else:
+        return HttpResponse(json.dumps({'status': 400, 'message': 'fail'}))
+
+
+def get_super_user(request):
+    username = request.GET.get("user_id", None)
+    if username==2:
+        dt = data_manager.get_all_super_manager()
+        return HttpResponse(json.dumps(dt,cls=CJsonEncoder))
+    else:
+        return HttpResponse(json.dumps( {'data':[],'status':200}))
+
+
+def bind_super_user(request):
+    super_id = request.GET.get("super_id", None)
+    kehu_id = request.GET.get("kehu_id", None)
+    if super_id and kehu_id:
+        dt = data_manager.bind_super_manager(super_id, kehu_id)
+        return HttpResponse(json.dumps(dt,cls=CJsonEncoder))
+    else:
+        return HttpResponse(json.dumps( {'msg':'fail','status':400}))
+
 
 
 def add_user(request):
@@ -19,17 +65,6 @@ def add_user(request):
     user_tel = request.GET.get("user_tel", None)
     if username and user_auth and user_tel:
         dt = data_manager.add_manager(tel_num=user_tel,user_name=username, pre=user_auth)
-        return HttpResponse(json.dumps(dt,cls=CJsonEncoder))
-    else:
-        return HttpResponse(json.dumps({'status': 400, 'message': 'fail'}))
-
-
-def add_user(request):
-    username = request.GET.get("user_name", None)
-    user_auth = request.GET.get("user_auth", None)
-    user_tel = request.GET.get("user_tel", None)
-    if username and user_auth and user_tel:
-        dt = data_manager.add_super_manager(tel_num=user_tel,user_name=username, pre=user_auth)
         return HttpResponse(json.dumps(dt,cls=CJsonEncoder))
     else:
         return HttpResponse(json.dumps({'status': 400, 'message': 'fail'}))
