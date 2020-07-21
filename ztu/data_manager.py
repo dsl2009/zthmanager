@@ -40,6 +40,49 @@ def add_manager(tel_num, user_name, pre):
     else:
         return {'status':200,'message':'ok'}
 
+def add_super_manager(tel_num, user_name,auth):
+    db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
+    cursor = db.cursor()
+    sql =  'insert into super_manager(user_name, user_tel, user_auth) values ( %s,%s,%s)'
+    num = cursor.execute(sql, ( user_name,  tel_num, auth))
+    db.commit()
+    db.close()
+    if num == 0:
+        return {'status':400,'message':'ok'}
+    else:
+        return {'status':200,'message':'ok'}
+
+def update_kehu_super_manager(change_id, delete_id):
+    db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
+    cursor = db.cursor()
+    sql = 'update kehu_tb set super_manager=%s where super_manager=%s'
+    cursor.execute(sql,(change_id, delete_id,))
+    db.commit()
+    db.close()
+
+
+def delete_super_mananger(change_id, delete_id):
+    update_kehu_super_manager(change_id, delete_id)
+    db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
+    cursor = db.cursor()
+    sql = 'delete  from super_manager where id=%s'
+    cursor.execute(sql, (delete_id,))
+    db.commit()
+    db.close()
+    return {'status': 200, 'message': 'ok'}
+
+
+def bind_super_manager(super_id, kehu_id):
+    db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
+    cursor = db.cursor()
+    sql = 'update kehu_tb set super_manager=%s where kehu_id=%s'
+    cursor.execute(sql, (super_id, kehu_id,))
+    db.commit()
+    db.close()
+
+
+
+
 def update_router(change_id, delete_id):
     db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
     cursor = db.cursor()
@@ -112,7 +155,8 @@ def get_manager_by_company(company_id):
 def get_kehu():
     db = pymysql.connect(host="localhost", user="root", passwd="900504", db="nst_iot", port=3306, charset='utf8')
     cursor = db.cursor()
-    sql = 'SELECT * from kehu_tb'
+    sql = 'SELECT kehu_tb.id, kehu_tb.name, kehu_tb.tel, kehu_tb.user_name,kehu_tb.password, ,kehu_tb.add_time, kehu_tb.super_manager,' \
+          'super_manager.user_name FROM kehu_tb LEFT JOIN super_manager ON kehu_tb.super_manager=super_manager.id'
     cursor.execute(sql)
     results = cursor.fetchall()
     db.close()
@@ -124,7 +168,9 @@ def get_kehu():
             'user_tel':x[2],
             'user_login_name':x[3],
             'user_login_password': x[4],
-            'add_time':x[5]
+            'add_time':x[5],
+            'super_id': x[6],
+            'super_name': x[7],
         })
     return {'data':dts,'status':200}
 

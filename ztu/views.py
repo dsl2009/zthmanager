@@ -23,6 +23,18 @@ def add_user(request):
     else:
         return HttpResponse(json.dumps({'status': 400, 'message': 'fail'}))
 
+
+def add_user(request):
+    username = request.GET.get("user_name", None)
+    user_auth = request.GET.get("user_auth", None)
+    user_tel = request.GET.get("user_tel", None)
+    if username and user_auth and user_tel:
+        dt = data_manager.add_super_manager(tel_num=user_tel,user_name=username, pre=user_auth)
+        return HttpResponse(json.dumps(dt,cls=CJsonEncoder))
+    else:
+        return HttpResponse(json.dumps({'status': 400, 'message': 'fail'}))
+
+
 def update_user(request):
     username = request.GET.get("user_name", None)
     user_auth = request.GET.get("user_auth", None)
